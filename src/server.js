@@ -1,11 +1,17 @@
-import express from 'express';
-import login from './controllers/login.js';
+import { config } from "dotenv";
+import express from "express";
+import login from "./controllers/login.js";
+
+config();
 
 const app = express();
 const port = 8080;
 
-app.get('/users', login);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(port,() => {
-    console.log(`Example app listening on port ${port}`)
+app.post("/login", login);
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
