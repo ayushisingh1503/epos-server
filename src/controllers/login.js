@@ -1,6 +1,7 @@
 import { getUserByEmail } from "../services/user.service.js";
 import { verifyPassword } from "../utilities/password.js";
 import { createToken } from "../utilities/token.js";
+import { saveToken } from "../services/token.service.js";
 
 const login = async (req, res) => {
   const { emailId, password } = req.body;
@@ -21,13 +22,16 @@ const login = async (req, res) => {
   }
 
   const { hashedPassword, ...withoutPassword } = user;
-  const token = createToken(withoutPassword);
+  const token = createToken(withoutPassword, 5 * 60);
+  const rToken = createToken(withoutPassword, 3 * 30 * 24 * 60 * 60);
+  await saveToken(user.user_id, rToken);
 
   res.status(200);
   res.json({
     message: "Success",
     payload: {
       accessToken: token,
+      refreshToken: rToken,
     },
   });
 };
