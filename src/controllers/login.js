@@ -21,8 +21,14 @@ const login = async (req, res) => {
     return;
   }
 
+  const expirationSeconds = 5 * 60;
+  const currentDate = new Date();
+  const expirationTime = currentDate.setTime(
+    currentDate.getTime() + expirationSeconds * 1000
+  );
+
   const { hashedPassword, ...withoutPassword } = user;
-  const token = createToken(withoutPassword, 5 * 60);
+  const token = createToken(withoutPassword, expirationSeconds);
   const rToken = createToken(withoutPassword, 3 * 30 * 24 * 60 * 60);
   await saveToken(user.user_id, rToken);
 
@@ -32,6 +38,7 @@ const login = async (req, res) => {
     payload: {
       accessToken: token,
       refreshToken: rToken,
+      expirationTime,
     },
   });
 };

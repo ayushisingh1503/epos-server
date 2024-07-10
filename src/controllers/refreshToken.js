@@ -4,8 +4,8 @@ import { getUserByEmail } from "../services/user.service.js";
 import { createToken } from "../utilities/token.js";
 
 const refreshToken = async (req, res) => {
-  const { token, userid } = req.body;
-  const userToken = await getToken(userid);
+  const { token, userId } = req.body;
+  const userToken = await getToken(userId);
 
   if (!token || token !== userToken.refresh_token) {
     res.status(401);
@@ -19,12 +19,19 @@ const refreshToken = async (req, res) => {
     const { hashedPassword, ...withoutPassword } = user;
     const accessToken = createToken(withoutPassword, 5 * 60);
 
+    const expirationSeconds = 5 * 60;
+    const currentDate = new Date();
+    const expirationTime = currentDate.setTime(
+      currentDate.getTime() + expirationSeconds * 1000
+    );
+
     res.status(200);
     res.json({
       message: "Success",
       payload: {
         accessToken: accessToken,
         refreshToken: token,
+        expirationTime,
       },
     });
   } catch (e) {
