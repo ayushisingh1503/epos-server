@@ -21,7 +21,7 @@ app.post("/auth/login", login);
 app.post("/auth/refresh", refreshToken);
 app.get("/menu", authorize, menu);
 app.get("/user/:storeId", authorize, user);
-app.post("/user", authorize, user);
+app.post("/user/:storeId", authorize, user);
 app.patch("/user", authorize, user);
 app.delete("/user", authorize, user);
 

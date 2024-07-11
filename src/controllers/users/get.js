@@ -1,9 +1,9 @@
-import { getUsersList } from "../../services/user.service.js";
+import { getList } from "../../services/user.service.js";
 
 const getUsers = async (req, res) => {
   try {
     const { storeId } = req.params;
-    const users = await getUsersList(storeId);
+    const users = await getList(storeId);
 
     res.status(200);
     res.json({

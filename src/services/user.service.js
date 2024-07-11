@@ -1,6 +1,7 @@
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { getClient } from "../utilities/dbclient.js";
+import { PutCommand } from "@aws-sdk/lib-dynamodb";
 
 export const getUserByEmail = async (email) => {
   const dynamodb = getClient();
@@ -22,7 +23,7 @@ export const getUserByEmail = async (email) => {
   }
 };
 
-export const getUsersList = async (storeId) => {
+export const getList = async (storeId) => {
   const dynamodb = getClient();
   const params = {
     ExpressionAttributeValues: {
@@ -40,4 +41,14 @@ export const getUsersList = async (storeId) => {
   } catch (err) {
     console.log("Error:", err);
   }
+};
+
+export const create = async (userPayload) => {
+  const dynamodb = getClient();
+  const items = {
+    TableName: "users",
+    Item: userPayload,
+  };
+
+  return await dynamodb.send(new PutCommand(items));
 };
