@@ -1,4 +1,4 @@
-import { getClient } from "../services/dbclient.js";
+import { getClient } from "../utilities/dbclient.js";
 import { PutCommand } from "@aws-sdk/lib-dynamodb";
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";

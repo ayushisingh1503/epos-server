@@ -1,6 +1,6 @@
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
-import { getClient } from "../services/dbclient.js";
+import { getClient } from "../utilities/dbclient.js";
 
 export const getUserByEmail = async (email) => {
   const dynamodb = getClient();
@@ -17,6 +17,26 @@ export const getUserByEmail = async (email) => {
     const data = await dynamodb.send(new QueryCommand(params));
 
     return unmarshall(data?.Items?.[0]);
+  } catch (err) {
+    console.log("Error:", err);
+  }
+};
+
+export const getUsersList = async (storeId) => {
+  const dynamodb = getClient();
+  const params = {
+    ExpressionAttributeValues: {
+      ":storeId": { S: storeId },
+    },
+    KeyConditionExpression: "store_id = :storeId",
+    TableName: "users",
+    IndexName: "store_id-created_at-index",
+  };
+
+  try {
+    const data = await dynamodb.send(new QueryCommand(params));
+
+    return unmarshall(data?.Items);
   } catch (err) {
     console.log("Error:", err);
   }
