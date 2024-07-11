@@ -4,10 +4,10 @@ import login from "./controllers/login.js";
 import refreshToken from "./controllers/refreshToken.js";
 import { authorize } from "./middlewares/authorization.js";
 import { menu } from "./controllers/menu.js";
-import { createUser } from "./controllers/users/create.js";
-import { getUsers } from "./controllers/users/get.js";
+import createUser from "./controllers/users/create.js";
+import getUsers from "./controllers/users/get.js";
 import { updateUser } from "./controllers/users/update.js";
-import { deleteUser } from "./controllers/users/delete.js";
+import deleteUser from "./controllers/users/delete.js";
 
 config();
 
@@ -20,10 +20,10 @@ app.use(express.urlencoded({ extended: true }));
 app.post("/auth/login", login);
 app.post("/auth/refresh", refreshToken);
 app.get("/menu", authorize, menu);
-app.get("/user/:storeId", authorize, user);
-app.post("/user/:storeId", authorize, user);
-app.patch("/user", authorize, user);
-app.delete("/user", authorize, user);
+app.get("/user/:storeId", authorize, getUsers);
+app.post("/user/:storeId", authorize, createUser);
+app.patch("/user/:userId", authorize, user);
+app.delete("/user/:userId", authorize, deleteUser);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

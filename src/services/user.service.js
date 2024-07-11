@@ -1,7 +1,7 @@
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 import { getClient } from "../utilities/dbclient.js";
-import { PutCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, DeleteCommand } from "@aws-sdk/lib-dynamodb";
 
 export const getUserByEmail = async (email) => {
   const dynamodb = getClient();
@@ -51,4 +51,16 @@ export const create = async (userPayload) => {
   };
 
   return await dynamodb.send(new PutCommand(items));
+};
+
+export const deleteItem = async (userId) => {
+  const dynamodb = getClient();
+  const items = {
+    TableName: "users",
+    Key: {
+      user_id: userId,
+    },
+  };
+
+  return await dynamodb.send(new DeleteCommand(items));
 };
