@@ -6,7 +6,7 @@ import { authorize } from "./middlewares/authorization.js";
 import { menu } from "./controllers/menu.js";
 import createUser from "./controllers/users/create.js";
 import getUsers from "./controllers/users/get.js";
-import { updateUser } from "./controllers/users/update.js";
+import updateUser from "./controllers/users/update.js";
 import deleteUser from "./controllers/users/delete.js";
 
 config();
@@ -22,7 +22,7 @@ app.post("/auth/refresh", refreshToken);
 app.get("/menu", authorize, menu);
 app.get("/user/:storeId", authorize, getUsers);
 app.post("/user/:storeId", authorize, createUser);
-app.patch("/user/:userId", authorize, user);
+app.patch("/user/:userId", authorize, updateUser);
 app.delete("/user/:userId", authorize, deleteUser);
 
 app.listen(port, () => {

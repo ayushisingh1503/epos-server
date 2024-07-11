@@ -1,9 +1,12 @@
-import { deleteItem } from "../../services/user.service.js";
+import { deleteItem, getUserById } from "../../services/user.service.js";
 
 const deleteUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    await deleteItem(userId);
+
+    const user = await getUserById(userId);
+
+    await deleteItem(userId, user.created_at);
 
     res.status(200);
     res.json({

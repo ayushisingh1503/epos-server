@@ -13,9 +13,11 @@ const createUser = async (req, res) => {
         status: "Failed",
         message: "Missing required fields",
       });
+
+      return;
     }
 
-    const hashedPassword = hashPassword(pin);
+    const hashedPassword = await hashPassword(pin);
     const userId = uuidv4();
     const createdAt = Date.now();
 

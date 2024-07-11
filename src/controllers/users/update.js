@@ -1,16 +1,33 @@
-import { getList } from "../../services/user.service.js";
+import { update, getUserById } from "../../services/user.service.js";
+import { hashPassword } from "../../utilities/password.js";
 
-const getUsers = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
-    const { storeId } = req.params;
-    const users = await getList(storeId);
+    const { userId } = req.params;
+    const { role, email, pin } = req.body;
+
+    const user = await getUserById(userId);
+
+    let hashedPassword = "";
+    if (pin) {
+      hashedPassword = await hashPassword(pin);
+    }
+
+    const payload = { role, email, hashedPassword };
+
+    const filteredPayload = Object.keys(payload).reduce((acc, key) => {
+      if (payload[key]) {
+        acc[key] = payload[key];
+      }
+
+      return acc;
+    }, {});
+
+    await update(userId, user.created_at, filteredPayload);
 
     res.status(200);
     res.json({
       status: "Success",
-      payload: {
-        users,
-      },
     });
   } catch (err) {
     console.error(err);
@@ -22,4 +39,4 @@ const getUsers = async (req, res) => {
   }
 };
 
-export default getUsers;
+export default updateUser;
