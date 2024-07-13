@@ -20,9 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 app.post("/auth/login", login);
 app.post("/auth/refresh", refreshToken);
 app.get("/menu", authorize, menu);
-app.get("/user/:storeId", authorize, getUsers);
+app.get("/users/:storeId", authorize, getUsers);
 app.post("/user/:storeId", authorize, createUser);
-app.patch("/user/:userId", authorize, updateUser);
+app.put("/user/:userId", authorize, updateUser);
 app.delete("/user/:userId", authorize, deleteUser);
 
 app.listen(port, () => {

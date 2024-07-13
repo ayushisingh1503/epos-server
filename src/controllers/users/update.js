@@ -4,26 +4,28 @@ import { hashPassword } from "../../utilities/password.js";
 const updateUser = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { role, email, pin } = req.body;
+    const { role, email, pin, name } = req.body;
+
+    if (!email || !role || !name) {
+      res.status(400);
+      res.json({
+        status: "Failed",
+        message: "Missing required fields",
+      });
+
+      return;
+    }
 
     const user = await getUserById(userId);
 
-    let hashedPassword = "";
+    let hashedPassword = user.hashedPassword;
     if (pin) {
       hashedPassword = await hashPassword(pin);
     }
 
-    const payload = { role, email, hashedPassword };
+    const payload = { role, email, hashedPassword, name };
 
-    const filteredPayload = Object.keys(payload).reduce((acc, key) => {
-      if (payload[key]) {
-        acc[key] = payload[key];
-      }
-
-      return acc;
-    }, {});
-
-    await update(userId, user.created_at, filteredPayload);
+    await update(userId, user.created_at, payload);
 
     res.status(200);
     res.json({

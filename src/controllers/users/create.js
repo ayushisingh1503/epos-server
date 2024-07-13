@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 const createUser = async (req, res) => {
   try {
     const { storeId } = req.params;
-    const { emailId, pin, accessRole } = req.body;
+    const { emailId, pin, accessRole, name } = req.body;
 
     if (!storeId || !emailId || !pin || !accessRole) {
       res.status(400);
@@ -28,6 +28,7 @@ const createUser = async (req, res) => {
       user_id: userId,
       created_at: createdAt,
       role: accessRole,
+      name,
     });
 
     res.status(201);
