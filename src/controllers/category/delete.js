@@ -5,12 +5,9 @@ import {
 
 const deleteCategory = async (req, res) => {
   try {
-    const { categoryId } = req.params;
+    const { categoryId, storeId } = req.params;
 
-    const category = await getCategoryById(categoryId);
-    console.log(category);
-
-    await deleteItem(category.category_id);
+    await deleteItem(categoryId, storeId);
 
     res.status(200);
     res.json({

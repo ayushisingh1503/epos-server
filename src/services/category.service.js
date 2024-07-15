@@ -1,6 +1,7 @@
 import { QueryCommand } from "@aws-sdk/client-dynamodb";
 import { unmarshall, marshall } from "@aws-sdk/util-dynamodb";
 import { getClient } from "../utilities/dbclient.js";
+import { DeleteCommand, PutCommand } from "@aws-sdk/lib-dynamodb";
 
 export const getList = async (storeId) => {
   const dynamodb = getClient();
@@ -44,13 +45,23 @@ export const getCategoryById = async (categoryId) => {
     console.log("Error:", err);
   }
 };
+export const create = async (categoryPayload) => {
+  const dynamodb = getClient();
+  const items = {
+    TableName: "categories",
+    Item: categoryPayload,
+  };
 
-export const deleteItem = async (categoryId) => {
+  return await dynamodb.send(new PutCommand(items));
+};
+
+export const deleteItem = async (categoryId, storeId) => {
   const dynamodb = getClient();
   const items = {
     TableName: "categories",
     Key: {
-      user_id: categoryId,
+      category_id: categoryId,
+      store_id: storeId,
     },
   };
 

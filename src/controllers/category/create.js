@@ -1,13 +1,12 @@
-import { create } from "../../services/user.service.js";
-import { hashPassword } from "../../utilities/password.js";
+import { create } from "../../services/category.service.js";
 import { v4 as uuidv4 } from "uuid";
 
 const createCategory = async (req, res) => {
   try {
     const { storeId } = req.params;
-    const { emailId, pin, accessRole, name } = req.body;
+    const { name } = req.body;
 
-    if (!storeId || !emailId || !pin || !accessRole) {
+    if (!storeId || !name) {
       res.status(400);
       res.json({
         status: "Failed",
@@ -17,17 +16,11 @@ const createCategory = async (req, res) => {
       return;
     }
 
-    const hashedPassword = await hashPassword(pin);
-    const userId = uuidv4();
-    const createdAt = Date.now();
+    const categoryId = uuidv4();
 
     await create({
       store_id: storeId,
-      email: emailId,
-      hashedPassword,
-      user_id: userId,
-      created_at: createdAt,
-      role: accessRole,
+      category_id: categoryId,
       name,
     });
 
@@ -45,4 +38,4 @@ const createCategory = async (req, res) => {
   }
 };
 
-export default createUser;
+export default createCategory;
