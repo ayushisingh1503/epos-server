@@ -1,7 +1,4 @@
-import {
-  deleteItem,
-  getCategoryById,
-} from "../../services/category.service.js";
+import { deleteItem } from "../../services/category.service.js";
 
 const deleteCategory = async (req, res) => {
   try {
