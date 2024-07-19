@@ -14,6 +14,7 @@ import updateUser from "./controllers/users/update.js";
 import deleteUser from "./controllers/users/delete.js";
 import createItem from "./controllers/item/create.js";
 import updateItem from "./controllers/item/update.js";
+import getItemsQuantity from "./controllers/inventory/get.js";
 
 config();
 
@@ -32,10 +33,11 @@ app.delete("/user/:userId", authorize, deleteUser);
 app.get("/menu/category/:storeId", authorize, getCategories);
 app.delete("/menu/:storeId/category/:categoryId", authorize, deleteCategory);
 app.post("/menu/category/:storeId", authorize, createCategory);
-app.get("/menu/item/:storeId", getItems);
-app.delete("/menu/:storeId/item/:itemId", deleteItem);
+app.get("/menu/item/:storeId", authorize, getItems);
+app.delete("/menu/:storeId/item/:itemId", authorize, deleteItem);
 app.post("/menu/item/:storeId", authorize, createItem);
-app.put("/menu/:storeId/item/:itemId", updateItem);
+app.put("/menu/:storeId/item/:itemId", authorize, updateItem);
+app.get("/inventory/:storeId/", getItemsQuantity);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
