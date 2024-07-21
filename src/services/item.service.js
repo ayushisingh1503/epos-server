@@ -40,6 +40,7 @@ export const create = async (itemPayload) => {
 
   return await dynamodb.send(new PutCommand(items));
 };
+
 export const update = async (itemId, storeId, itemPayload) => {
   const dynamodb = getClient();
   const updateKeys = generateUpdateExpression(itemPayload);

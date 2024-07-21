@@ -30,6 +30,7 @@ const createItem = async (req, res) => {
     res.status(201);
     res.json({
       message: "Success",
+      payload: { itemId },
     });
   } catch (err) {
     console.error(err);
