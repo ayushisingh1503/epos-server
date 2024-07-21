@@ -5,7 +5,7 @@ const createInventoryItem = async (req, res) => {
     const { storeId } = req.params;
     const { item_id, quantity } = req.body;
 
-    if (!storeId || !item_id || !quantity) {
+    if (!storeId || !item_id || quantity === null || quantity === undefined) {
       res.status(400);
       res.json({
         status: "Failed",
