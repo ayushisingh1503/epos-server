@@ -4,9 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 const createCategory = async (req, res) => {
   try {
     const { storeId } = req.params;
-    const { name } = req.body;
+    const { name, type } = req.body;
 
-    if (!storeId || !name) {
+    if (!storeId || !name || !type) {
       res.status(400);
       res.json({
         status: "Failed",
@@ -22,6 +22,7 @@ const createCategory = async (req, res) => {
       store_id: storeId,
       category_id: categoryId,
       name,
+      type,
     });
 
     res.status(201);

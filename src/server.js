@@ -32,16 +32,16 @@ app.get("/users/:storeId", authorize, getUsers);
 app.post("/user/:storeId", authorize, createUser);
 app.put("/user/:userId", authorize, updateUser);
 app.delete("/user/:userId", authorize, deleteUser);
-app.get("/menu/category/:storeId", authorize, getCategories);
+app.get("/menu/category/:storeId", getCategories);
 app.delete("/menu/:storeId/category/:categoryId", authorize, deleteCategory);
 app.post("/menu/category/:storeId", authorize, createCategory);
 app.get("/menu/item/:storeId", authorize, getItems);
 app.delete("/menu/:storeId/item/:itemId", authorize, deleteItem);
-app.post("/menu/item/:storeId", createItem);
+app.post("/menu/item/:storeId", authorize, createItem);
 app.put("/menu/:storeId/item/:itemId", authorize, updateItem);
-app.get("/inventory/:storeId/", getItemsQuantity);
-app.post("/inventory/:storeId", createInventoryItem);
-app.patch("/inventory/:storeId/", updateItemQuantity);
+app.get("/inventory/:storeId/", authorize, getItemsQuantity);
+app.post("/inventory/:storeId", authorize, createInventoryItem);
+app.patch("/inventory/:storeId/", authorize, updateItemQuantity);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
