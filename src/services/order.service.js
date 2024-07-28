@@ -55,18 +55,15 @@ export const getOrdersByDate = async (
   }
 };
 
-// export const create = async (itemPayload) => {
-//   const dynamodb = getClient();
-//   const items = {
-//     TableName: "inventory",
-//     Item: {
-//       item_id: itemPayload.item_id,
-//       store_id: itemPayload.store_id,
-//       quantity: itemPayload.quantity,
-//     },
-//   };
-//   return await dynamodb.send(new PutCommand(items));
-// };
+export const create = async (itemPayload) => {
+  const dynamodb = getClient();
+  const items = {
+    TableName: "orders",
+    Item: itemPayload,
+  };
+
+  return await dynamodb.send(new PutCommand(items));
+};
 
 // export const update = async (storeId, itemPayload) => {
 //   const dynamodb = getClient();
