@@ -5,7 +5,7 @@ const updateItemQuantity = async (req, res) => {
     const { storeId } = req.params;
     const { item_id, quantity } = req.body;
 
-    if (!quantity) {
+    if (quantity === undefined || quantity === null) {
       res.status(400);
       res.json({
         status: "Failed",

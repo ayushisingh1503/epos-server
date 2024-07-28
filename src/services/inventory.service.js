@@ -42,12 +42,14 @@ export const create = async (itemPayload) => {
 
 export const update = async (storeId, itemPayload) => {
   const dynamodb = getClient();
-  const updateKeys = generateUpdateExpression(itemPayload);
+  const updateKeys = generateUpdateExpression({
+    quantity: itemPayload.quantity,
+  });
 
   const items = {
     TableName: "inventory",
     Key: {
-      item_id: itemPayload.itemId,
+      item_id: itemPayload.item_id,
       store_id: storeId,
     },
     ...updateKeys,
