@@ -3,7 +3,7 @@ import { update } from "../../services/inventory.service.js";
 const updateItemQuantity = async (req, res) => {
   try {
     const { storeId } = req.params;
-    const { itemId, quantity } = req.body;
+    const { item_id, quantity } = req.body;
 
     if (!quantity) {
       res.status(400);
@@ -13,7 +13,7 @@ const updateItemQuantity = async (req, res) => {
       });
       return;
     }
-    const itemPayload = { quantity, itemId };
+    const itemPayload = { quantity, item_id };
 
     await update(storeId, itemPayload);
 

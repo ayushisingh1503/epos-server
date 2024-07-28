@@ -16,11 +16,11 @@ const createItem = async (req, res) => {
       return;
     }
 
-    const itemId = uuidv4();
+    const item_id = uuidv4();
 
     await create({
       store_id: storeId,
-      item_id: itemId,
+      item_id: item_id,
       name: itemName,
       price,
       category: category,
@@ -30,7 +30,7 @@ const createItem = async (req, res) => {
     res.status(201);
     res.json({
       message: "Success",
-      payload: { itemId },
+      payload: { item_id },
     });
   } catch (err) {
     console.error(err);
