@@ -45,8 +45,13 @@ const createOrder = async (req, res) => {
     }
 
     const orderItems = items.map((item) => {
-      const itemPrice = item.menuItem.price * item.quantity;
-      const itemVat = (item.menuItem.tax_rate / 100) * itemPrice;
+      const options = { precision: 2 };
+      const itemPrice = currency(item.menuItem.price).multiply(
+        item.quantity
+      ).value;
+      const itemVat = currency(item.menuItem.tax_rate, options)
+        .divide(100)
+        .multiply(itemPrice).value;
 
       return {
         ...item,

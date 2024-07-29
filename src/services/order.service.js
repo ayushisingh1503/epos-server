@@ -65,19 +65,19 @@ export const create = async (itemPayload) => {
   return await dynamodb.send(new PutCommand(items));
 };
 
-// export const update = async (storeId, itemPayload) => {
-//   const dynamodb = getClient();
-//   const updateKeys = generateUpdateExpression(itemPayload);
+export const update = async (storeId, orderId, itemPayload) => {
+  const dynamodb = getClient();
+  const updateKeys = generateUpdateExpression(itemPayload);
 
-//   const items = {
-//     TableName: "inventory",
-//     Key: {
-//       item_id: itemPayload.itemId,
-//       store_id: storeId,
-//     },
-//     ...updateKeys,
-//     ReturnValues: "ALL_NEW",
-//   };
+  const items = {
+    TableName: "orders",
+    Key: {
+      order_id: orderId,
+      store_id: storeId,
+    },
+    ...updateKeys,
+    ReturnValues: "ALL_NEW",
+  };
 
-//   return await dynamodb.send(new UpdateCommand(items));
-// };
+  return await dynamodb.send(new UpdateCommand(items));
+};

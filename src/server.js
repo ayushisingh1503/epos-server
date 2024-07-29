@@ -19,6 +19,8 @@ import createInventoryItem from "./controllers/inventory/create.js";
 import updateItemQuantity from "./controllers/inventory/update.js";
 import { getOrderList } from "./controllers/orders/get.js";
 import createOrder from "./controllers/orders/create.js";
+import updateOrder from "./controllers/orders/update.js";
+import patchOrder from "./controllers/orders/patch.js";
 
 config();
 
@@ -46,6 +48,8 @@ app.post("/inventory/:storeId", authorize, createInventoryItem);
 app.patch("/inventory/:storeId/", authorize, updateItemQuantity);
 app.get("/order/:storeId", getOrderList);
 app.post("/order/:storeId/", createOrder);
+app.put("/order/:storeId/:orderId", updateOrder);
+app.patch("/order/:storeId/:orderId", patchOrder);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
