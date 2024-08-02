@@ -77,14 +77,18 @@ const updateOrder = async (req, res) => {
       return acc;
     }, currency(0)).value;
 
-    await update(storeId, orderId, {
+    const payload = {
       items: orderItems,
       amount,
       totalVat,
       staff_name,
       status: req.body.status,
-      note: req.body.note,
-    });
+    };
+    if (req.body.note) {
+      payload.note = req.body.note;
+    }
+
+    await update(storeId, orderId, payload);
 
     const inventoryPayload = items.map((item) => {
       const inventoryItem = inventoryItems.find(
