@@ -84,6 +84,7 @@ const updateOrder = async (req, res) => {
       staff_name,
       status: req.body.status,
     };
+
     if (req.body.note) {
       payload.note = req.body.note;
     }

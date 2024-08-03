@@ -35,8 +35,7 @@ const createOrder = async (req, res) => {
     });
 
     if (hasAnyItemExceededInventory) {
-      res.status(400);
-      res.json({
+      res.status(400).json({
         status: "Failed",
         message: "Item Unavailable",
       });
@@ -57,6 +56,10 @@ const createOrder = async (req, res) => {
         ...item,
         itemPrice,
         itemVat,
+        menuItem: {
+          ...item.menuItem,
+          status: "not_started",
+        },
       };
     });
 

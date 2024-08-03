@@ -21,6 +21,7 @@ import { getOrderList } from "./controllers/orders/get.js";
 import createOrder from "./controllers/orders/create.js";
 import updateOrder from "./controllers/orders/update.js";
 import patchOrder from "./controllers/orders/patch.js";
+import updateItemStatus from "./controllers/backoffice/patch.js";
 
 config();
 
@@ -46,10 +47,11 @@ app.put("/menu/:storeId/item/:itemId", authorize, updateItem);
 app.get("/inventory/:storeId/", authorize, getItemsQuantity);
 app.post("/inventory/:storeId", authorize, createInventoryItem);
 app.patch("/inventory/:storeId/", authorize, updateItemQuantity);
-app.get("/order/:storeId", getOrderList);
+app.get("/order/:storeId", authorize, getOrderList);
 app.post("/order/:storeId/", createOrder);
-app.put("/order/:storeId/:orderId", updateOrder);
-app.patch("/order/:storeId/:orderId", patchOrder);
+app.put("/order/:storeId/:orderId", authorize, updateOrder);
+app.patch("/order/:storeId/:orderId", authorize, patchOrder);
+app.patch("/order/:storeId/:orderId/itemStatus", authorize, updateItemStatus);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

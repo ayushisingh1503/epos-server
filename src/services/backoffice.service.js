@@ -1,0 +1,64 @@
+import { QueryCommand } from "@aws-sdk/client-dynamodb";
+import { unmarshall, marshall } from "@aws-sdk/util-dynamodb";
+import { getClient } from "../utilities/dbclient.js";
+import { UpdateCommand } from "@aws-sdk/lib-dynamodb";
+import { generateUpdateExpression } from "../utilities/update-expression.js";
+
+export const getList = async (storeId) => {
+  const dynamodb = getClient();
+  const params = {
+    ExpressionAttributeValues: {
+      ":storeId": { S: storeId },
+    },
+    KeyConditionExpression: "store_id = :storeId",
+    TableName: "orders",
+  };
+
+  try {
+    const data = await dynamodb.send(new QueryCommand(params));
+
+    const items = data?.Items?.map((item) => {
+      return unmarshall(item);
+    });
+
+    return items;
+  } catch (err) {
+    console.log("Error:", err);
+  }
+};
+
+export const getOrderById = async (storeId, orderId) => {
+  const dynamodb = getClient();
+  const params = {
+    ExpressionAttributeValues: marshall({
+      ":storeId": storeId,
+      ":orderId": orderId,
+    }),
+    KeyConditionExpression: "order_id = :orderId AND store_id = :storeId",
+    TableName: "orders",
+  };
+  try {
+    const data = await dynamodb.send(new QueryCommand(params));
+
+    return data.Items?.map((item) => unmarshall(item))?.[0];
+  } catch (err) {
+    console.log("Error:", err);
+  }
+};
+
+export const update = async (storeId, orderId, itemPayload) => {
+  const dynamodb = getClient();
+  const updateKeys = generateUpdateExpression(itemPayload);
+
+  const items = {
+    TableName: "orders",
+    Key: {
+      order_id: orderId,
+      store_id: storeId,
+    },
+    ...updateKeys,
+    ReturnValues: "ALL_NEW",
+  };
+
+  return await dynamodb.send(new UpdateCommand(items));
+};
