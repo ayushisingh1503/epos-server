@@ -1,5 +1,5 @@
 import { update, getOrderById } from "../../services/backoffice.service.js";
-import { notify } from "../../utilities/pusher.js";
+import { notify } from "../../utilities/notification.js";
 
 const updateItemStatus = async (req, res) => {
   try {

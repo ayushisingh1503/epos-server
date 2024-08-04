@@ -22,6 +22,7 @@ import createOrder from "./controllers/orders/create.js";
 import updateOrder from "./controllers/orders/update.js";
 import patchOrder from "./controllers/orders/patch.js";
 import updateItemStatus from "./controllers/backoffice/patch.js";
+import emailReceipt from "./controllers/email/receipt.js";
 
 config();
 
@@ -37,7 +38,7 @@ app.get("/users/:storeId", authorize, getUsers);
 app.post("/user/:storeId", authorize, createUser);
 app.put("/user/:userId", authorize, updateUser);
 app.delete("/user/:userId", authorize, deleteUser);
-app.get("/menu/category/:storeId", getCategories);
+app.get("/menu/category/:storeId", authorize, getCategories);
 app.delete("/menu/:storeId/category/:categoryId", authorize, deleteCategory);
 app.post("/menu/category/:storeId", authorize, createCategory);
 app.get("/menu/item/:storeId", authorize, getItems);
@@ -52,6 +53,7 @@ app.post("/order/:storeId/", createOrder);
 app.put("/order/:storeId/:orderId", authorize, updateOrder);
 app.patch("/order/:storeId/:orderId", authorize, patchOrder);
 app.patch("/order/:storeId/:orderId/itemStatus", authorize, updateItemStatus);
+app.post("/order/:storeId/:orderId/receipt", emailReceipt);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
