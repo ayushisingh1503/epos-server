@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 const createItem = async (req, res) => {
   try {
     const { storeId } = req.params;
-    const { itemName, price, taxRate, category } = req.body;
+    const { itemName, price, taxRate, category, imageKey } = req.body;
 
     if (!storeId || !itemName || !price || !taxRate || !category) {
       res.status(400);
@@ -25,6 +25,7 @@ const createItem = async (req, res) => {
       price,
       category: category,
       tax_rate: taxRate,
+      image_key: imageKey,
     });
 
     res.status(201);

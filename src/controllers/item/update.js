@@ -3,9 +3,9 @@ import { update } from "../../services/item.service.js";
 const updateItem = async (req, res) => {
   try {
     const { itemId, storeId } = req.params;
-    const { category, name, price, tax_rate } = req.body;
+    const { category, name, price, taxRate, imageKey } = req.body;
 
-    if (!category || !tax_rate || !price || !name) {
+    if (!category || !taxRate || !price || !name) {
       res.status(400);
       res.json({
         status: "Failed",
@@ -13,7 +13,13 @@ const updateItem = async (req, res) => {
       });
       return;
     }
-    const payload = { category, tax_rate, price, name };
+    const payload = {
+      category,
+      tax_rate: taxRate,
+      price,
+      name,
+      image_key: imageKey,
+    };
 
     await update(itemId, storeId, payload);
 

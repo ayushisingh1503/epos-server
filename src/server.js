@@ -23,8 +23,12 @@ import updateOrder from "./controllers/orders/update.js";
 import patchOrder from "./controllers/orders/patch.js";
 import updateItemStatus from "./controllers/backoffice/patch.js";
 import emailReceipt from "./controllers/email/receipt.js";
+import { imageUpload, getImage } from "./controllers/uploadimage.js";
+import multer from "multer";
 
 config();
+
+const upload = multer({ dest: "uploads/" });
 
 const app = express();
 const port = 8080;
@@ -49,11 +53,13 @@ app.get("/inventory/:storeId/", authorize, getItemsQuantity);
 app.post("/inventory/:storeId", authorize, createInventoryItem);
 app.patch("/inventory/:storeId/", authorize, updateItemQuantity);
 app.get("/order/:storeId", authorize, getOrderList);
-app.post("/order/:storeId/", createOrder);
+app.post("/order/:storeId/", authorize, createOrder);
 app.put("/order/:storeId/:orderId", authorize, updateOrder);
 app.patch("/order/:storeId/:orderId", authorize, patchOrder);
 app.patch("/order/:storeId/:orderId/itemStatus", authorize, updateItemStatus);
-app.post("/order/:storeId/:orderId/receipt", emailReceipt);
+app.post("/order/:storeId/:orderId/receipt", authorize, emailReceipt);
+app.post("/menu/image", authorize, upload.single("image"), imageUpload);
+app.get("/menu/image/:key", authorize, getImage);
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
