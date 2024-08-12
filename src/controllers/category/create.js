@@ -1,10 +1,14 @@
-import { create } from "../../services/category.service.js";
+import { create, getList } from "../../services/category.service.js";
 import { v4 as uuidv4 } from "uuid";
 
 const createCategory = async (req, res) => {
   try {
     const { storeId } = req.params;
     const { name, type } = req.body;
+    const categories = await getList(storeId);
+    const existingCategory = categories.find(
+      (category) => category.name === name && category.type === type
+    );
 
     if (!storeId || !name || !type) {
       res.status(400);
@@ -13,6 +17,14 @@ const createCategory = async (req, res) => {
         message: "Missing required fields",
       });
 
+      return;
+    }
+
+    if (existingCategory) {
+      res.status(400).json({
+        error: "Failed",
+        message: "Category already exists",
+      });
       return;
     }
 

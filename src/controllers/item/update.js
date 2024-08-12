@@ -13,13 +13,17 @@ const updateItem = async (req, res) => {
       });
       return;
     }
+
     const payload = {
       category,
       tax_rate: taxRate,
       price,
       name,
-      image_key: imageKey,
     };
+
+    if (imageKey) {
+      payload.image_key = imageKey;
+    }
 
     await update(itemId, storeId, payload);
 
